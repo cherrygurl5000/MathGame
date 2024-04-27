@@ -1,0 +1,154 @@
+// Variables
+$score: #06D6A0;
+$scoreBg: #F8FFE5;
+$missed: #EF476F;
+$missedBg: #FFC43D;
+$restartBg: #ffc53da1;
+$btnsBg: #1b99aa;
+$btnsText: #e9f9fc;
+$bodyBg: #1b99aa35;
+$scoringFont: 15px;
+$h1Font: 45px;
+
+// Mixins
+@mixin scoringBg {
+    border-radius: 50%;
+    width: $scoringFont + 15;
+    text-align: center;
+    padding-left: 8px;
+}
+
+body {
+    background-color: $bodyBg;
+}
+.container {
+    max-width: 500px;
+}
+
+p {
+    font-size: 14px;
+}
+
+#timer {
+    font-size: 30px;
+    background-color: $scoreBg;
+    width: fit-content;
+    padding: 6px 4px;
+    border-radius: 10px;
+}
+
+.timerDiv {
+    padding-left: 3px
+}
+
+.scoring {
+    font-size: $scoringFont;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+h1 {
+    font-size: $h1Font;
+}
+
+input {
+    width: 80%;
+    direction: rtl;
+    font-size: $h1Font;
+    padding-left: 25px;
+    margin-left: 25px;
+    -moz-appearance: textfield;
+    border: none;
+    border-top: 8px solid black;
+    background: transparent;
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+}
+
+#score {
+    color: $score;
+    background-color: $scoreBg;
+    @include scoringBg;
+}
+
+#missed {
+    color: $missed;
+    background-color: $missedBg;
+    @include scoringBg;
+}
+
+button {
+    border-radius: 10px;
+}
+
+.numbers, .resNumbers {
+    width: 70%;
+    height: 40px;
+    margin-bottom: 2px;
+    font-size: 20px;
+    background-color: $btnsBg;
+    color: $btnsText;
+}
+
+#checkmark {
+    color: $scoreBg;
+    background-color: $score;
+    width: $h1Font - 5;
+    height: $h1Font - 5;
+    font-size: 25px;
+    margin-top: 20px;
+}
+#clear {
+    color: $missedBg;
+}
+
+#backspace {
+    color: $scoreBg;
+}
+
+#restart {
+    width: 80%;
+    color: azure;
+    background-color: #157784;
+}
+
+#pause {
+    width: 50%;
+    color: azure;
+    background-color: #157784;
+}
+
+hr {
+    margin: 0;
+    padding: 0;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.tooLong {
+    // Add a shake if there are too many digits
+    color: $missed;
+    animation: shake 0.5s;
+    animation-iteration-count: infinite; 
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
+
+  .correct {
+    color: $score;
+  }
