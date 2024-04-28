@@ -8,22 +8,39 @@ const operand = $('#operator');
 const score = $('#score');
 const missed = $('#missed');
 const checkmark = $('#checkmark');
+const timer = $('#timer');
 const restart = $('#restart');
 // const numbers = $('.numbers');
 const numbers = document.querySelectorAll('.numbers');
-const chosen = 'multiply';
+let chosenTime = 10;
+let chosen = '';
+let maxNum = 10;
 
 let correct = 0;
 let wrong = 0;
 let ans = 0;
+let timeRemaining = chosenTime;
 
-score.text('0');
-missed.text('0');
 
 // Disable the keyboard
 document.onkeydown = function (e) {
     return false;
 }
+
+// Start the game
+let start = () => {   
+    for (var i = 1; i < 99999; i++)
+        window.clearInterval(i); 
+    score.text('0');
+    missed.text('0');
+    correct = 0;
+    wrong = 0;
+    ans = 0;
+    timeRemaining = chosenTime;
+    setInterval(timing, 1000);
+    timing();
+    problem('addition');
+};
 
 // Clear the input value
 clearBtn.on("click", () => answer.val(''));
@@ -31,6 +48,8 @@ clearBtn.on("click", () => answer.val(''));
 // Delete the last character
 backspace.on("click", () => answer.val(answer.val().slice(0,-1)));
 
+// Reset everything when Restart is clicked
+restart.on("click", start);
 // Add the button number to the input
 numbers.forEach(number => {
     number.addEventListener('click', () => {
@@ -41,7 +60,7 @@ numbers.forEach(number => {
 
 // Don't allow more than 5 digits in the answer
 answer.change(() => {
-    console.log(answer.val().length);
+    // console.log(answer.val().length);
     if (answer.val().length > 5) {
         answer.val(answer.val().slice(0, -1));
         answer.addClass('tooLong');
@@ -62,14 +81,12 @@ let problem = (operator) => {
             botNum.text(b);
             operand.text('+');
             ans = addition();
-            console.log(ans);
             break;
         case 'multiply':
             topNum.text(a);
             botNum.text(b);
             operand.text('x');
             ans = multiply();
-            console.log(ans);
             break;
         case 'subtraction': 
             if(a < b) {
@@ -82,7 +99,6 @@ let problem = (operator) => {
             }
             operand.text('-');
             ans = subtraction();
-            console.log(ans);
             break;
         case 'division':
             while(a % b !== 0) {
@@ -94,7 +110,6 @@ let problem = (operator) => {
             operand.html('<i class="fa-solid fa-divide"></i>');
             operand.css('font-size', '30px');
             ans = division();
-            console.log(ans);
             break;
         default:
             console.log("nothing");
@@ -122,7 +137,7 @@ let checking = () => {
 };
 
 // Choose which numbers to place there
-let randoms = () => Math.floor(Math.random() * 12);
+let randoms = () => Math.floor(Math.random() * maxNum);
 
 // Complete math operations
 let multiply = () => Number(topNum.text()) * Number(botNum.text());
@@ -133,5 +148,143 @@ let division = () => Number(topNum.text()) / Number(botNum.text());
 // Check the answers when you click the checkmark
 checkmark.on("click", checking);
 
-problem(chosen);
-randoms();
+// Set the timer
+let timing = () => {
+    // Determine minutes and seconds
+    let minutes = "";
+    let seconds = "";
+    let mins = 0;
+    let sec = 0;
+
+    mins = Math.trunc(timeRemaining/60);
+    sec = timeRemaining % 60;
+    minutes = (mins<10) ? "0" + mins : mins;
+    seconds = (sec<10) ? "0" + sec : sec;
+
+    timer.text(minutes + ":" + seconds);
+    timeRemaining--;
+
+    if (timeRemaining < 0) {
+        for (let i = 1; i < 99999; i++)
+            window.clearInterval(i);
+        timer.addClass('tooLong');
+        setTimeout(() => timer.removeClass('tooLong'), 1000);
+    }
+};
+
+// Set the operand
+let setOperand = (operator) => {
+    chosen = operator;
+    console.log(chosen);
+    problem(chosen);
+    $('.modal-body').empty();
+    $('.modal-body').html(
+        `<div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="twelve" onclick="setMaxNums(this.id)">0-12</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="twenty" onclick="setMaxNums(this.id)">0-20</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="thirty" onclick="setMaxNums(this.id)">0-30</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="fifty" onclick="setMaxNums(this.id)">0-50</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="hundred" onclick="setMaxNums(this.id)">0-100</button>
+        </div>
+    </div>`
+    );
+};
+
+// Set the max number for the equations
+let setMaxNums = (maxNumber) => {
+    // determine the max number
+    switch(maxNumber) {
+        case 'twelve':
+            maxNum = 12;
+            break;
+        case 'twenty':
+            maxNum = 20;
+            break;
+        case 'thirty':
+            maxNum = 30;
+            break;
+        case 'fifty':
+            maxNum = 50;
+            break;
+        case 'hundred':
+            maxNum = 100;
+            break;
+        default:
+            maxNum = 10;
+            break;
+    }    
+    $('.modal-body').empty();
+    $('.modal-body').html(
+        `<div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="sixty" onclick="setTimes(this.id)">60 sec</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="ninety" onclick="setTimes(this.id)">90 sec</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="two" onclick="setTimes(this.id)">2 min</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="practice" onclick="setTimes(this.id)">Practice</button>
+        </div>
+    </div>`
+    );
+}
+
+// Set the timer
+let setTimes = (theTime) => {
+    console.log(theTime);
+    // determine the timer amount
+    switch(theTime) {
+        case 'sixty':
+            chosenTime = 60;
+            break;
+        case 'ninety':
+            chosenTime = 90;
+            break;
+        case 'two':
+            chosenTime = 120;
+            break;
+        case 'practice':
+            $('#theTop').remove();
+            $('#theTime').replaceWith(
+                `
+                <div class="col-4 offset-2 align-self-center text-end">
+                    <p class="infinite"><i class="fa-solid fa-infinity"></i></p>
+                </div>
+                `
+            );
+            break;
+        default:
+            chosenTime = 10;
+            break;
+    }    
+    /*$('.modal-body').empty();
+    $('.modal-body').html();*/
+}
+
+

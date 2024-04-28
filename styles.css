@@ -44,6 +44,7 @@ input {
   border-top: 8px solid black;
   background: transparent;
   text-align: center;
+  caret-color: transparent;
 }
 
 input:focus {
@@ -160,4 +161,21 @@ hr {
 }
 .correct {
   color: #06D6A0;
+}
+
+.oper {
+  font-size: 35px;
+  background-color: #1b99aa;
+  color: #e9f9fc;
+}
+.oper .fa-divide {
+  font-size: 20px;
+}
+
+.infinite {
+  font-size: 45px;
+  padding-right: 42px;
+  color: #FFC43D;
+  background-color: #06D6A0;
+  border-radius: 15px;
 }/*# sourceMappingURL=styles.css.map */
