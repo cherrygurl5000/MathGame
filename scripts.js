@@ -13,7 +13,7 @@ const restart = $('#restart');
 // const numbers = $('.numbers');
 const numbers = document.querySelectorAll('.numbers');
 let chosenTime = 60;
-let chosen = '';
+let chosen = 'addition';
 let maxNum = 10;
 
 let correct = 0;
@@ -41,7 +41,7 @@ let start = () => {
         timeRemaining = chosenTime;
         setInterval(timing, 1000);
         timing();
-        problem('addition');
+        problem(chosen);
         $('#startModal').modal('hide');
     }, 3900);
         let count = 3;
