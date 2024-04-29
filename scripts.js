@@ -12,7 +12,7 @@ const timer = $('#timer');
 const restart = $('#restart');
 // const numbers = $('.numbers');
 const numbers = document.querySelectorAll('.numbers');
-let chosenTime = 10;
+let chosenTime = 60;
 let chosen = '';
 let maxNum = 10;
 
@@ -31,15 +31,27 @@ document.onkeydown = function (e) {
 let start = () => {   
     for (var i = 1; i < 99999; i++)
         window.clearInterval(i); 
-    score.text('0');
-    missed.text('0');
-    correct = 0;
-    wrong = 0;
-    ans = 0;
-    timeRemaining = chosenTime;
-    setInterval(timing, 1000);
-    timing();
-    problem('addition');
+    $('#endModal').modal('hide');
+    setTimeout(() => {
+        score.text('0');
+        missed.text('0');
+        correct = 0;
+        wrong = 0;
+        ans = 0;
+        timeRemaining = chosenTime;
+        setInterval(timing, 1000);
+        timing();
+        problem('addition');
+        $('#startModal').modal('hide');
+    }, 3900);
+        let count = 3;
+    setInterval(() => {
+        $('#starting').remove();
+        $('#startingDiv').html(
+            `<h1 class="text-center">${ (count > 0) ? count : "GO!" }</h1>`
+        );
+        count--;
+    }, 800);
 };
 
 // Clear the input value
@@ -49,7 +61,7 @@ clearBtn.on("click", () => answer.val(''));
 backspace.on("click", () => answer.val(answer.val().slice(0,-1)));
 
 // Reset everything when Restart is clicked
-restart.on("click", start);
+//restart.on("click", reset);
 // Add the button number to the input
 numbers.forEach(number => {
     number.addEventListener('click', () => {
@@ -169,11 +181,15 @@ let timing = () => {
             window.clearInterval(i);
         timer.addClass('tooLong');
         setTimeout(() => timer.removeClass('tooLong'), 1000);
+        $('#endModal').modal('show');
+        $('#finalScore').text('Score: ' + score.text());
+        $('#finalMissed').text('Missed: ' + missed.text());
+        $('#endMsg').text((Number(score.text()) >= Number(missed.text()) + 5) ? "Keep up the good work!" : "Keep Practicing!");
     }
 };
 
 // Set the operand
-let setOperand = (operator) => {
+/*let setOperand = (operator) => {
     chosen = operator;
     console.log(chosen);
     problem(chosen);
@@ -208,7 +224,7 @@ let setOperand = (operator) => {
 };
 
 // Set the max number for the equations
-let setMaxNums = (maxNumber) => {
+/*let setMaxNums = (maxNumber) => {
     // determine the max number
     switch(maxNumber) {
         case 'twelve':
@@ -253,7 +269,7 @@ let setMaxNums = (maxNumber) => {
         </div>
     </div>`
     );
-}
+} 
 
 // Set the timer
 let setTimes = (theTime) => {
@@ -284,7 +300,57 @@ let setTimes = (theTime) => {
             break;
     }    
     /*$('.modal-body').empty();
-    $('.modal-body').html();*/
+    $('.modal-body').html();//
+} */
+
+// Reset the start modal
+let reset = () => {
+    $('#endModal').modal('hide');
+
+    setTimeout( () => {
+        $('#pausing').remove();
+        $('#startingDiv').html(
+            `<button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>`
+        );
+        $('#startModal').modal('show');
+        
+        for (var i = 1; i < 99999; i++)
+            window.clearInterval(i); 
+        score.text('0');
+        missed.text('0');
+    }, 500);
+};
+
+// Pause the timer
+let pause = () => {
+    for (var i = 1; i < 99999; i++)
+        window.clearInterval(i); 
+    let sameTime = timeRemaining + 1;
+    console.log("remaining: " + sameTime);
+    $('#startingDiv').html(
+        `<button type="button" class="w-100 oper pb-2" id="unpause" onclick="startAgain(${ sameTime })">Play</button>`
+    );
+    $('#startingDiv').parent().append(
+        `<div class="row justify-content-center" id="pausing">
+            <div class="col-4 mb-2" id="pauseDiv">
+                <button type="button" class="w-100 oper pb-2" id="restarted" onclick="reset()">Restart</button>
+            </div>
+        </div>`
+    );
+    $('#startModal').modal('show');
+
+};
+
+// Restart the game after pause
+let startAgain = (sameTime) => {
+    timeRemaining = sameTime;
+    setInterval(timing, 1000);
+    timing();
+    problem('addition');
+    $('#pausing').remove();
+    $('#startModal').modal('hide');
 }
+// Trigger modal on load
+$(window).on('load', () => $('#startModal').modal('show'));
 
 
