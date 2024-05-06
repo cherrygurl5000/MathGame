@@ -21,6 +21,81 @@ let wrong = 0;
 let ans = 0;
 let timeRemaining = chosenTime;
 
+// Set the modal body html
+const startingHtml = `
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2" id="startingDiv">
+            <button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>
+        </div>
+    </div>`;
+const operandHtml = `
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper pb-2" id="addition" onclick="setOperand(this.id)">+</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper pb-2" id="subtraction" onclick="setOperand(this.id)">-</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper pt-2" id="multiply" onclick="setOperand(this.id)">*</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper pb-2" id="division" onclick="setOperand(this.id)"><i class="fa-solid fa-divide"></i></button>
+        </div>
+    </div>`;
+const maxNumsHtml = `
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="twelve" onclick="setMaxNums(this.id)">0-12</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="twenty" onclick="setMaxNums(this.id)">0-20</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="thirty" onclick="setMaxNums(this.id)">0-30</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="fifty" onclick="setMaxNums(this.id)">0-50</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="hundred" onclick="setMaxNums(this.id)">0-100</button>
+        </div>
+    </div>`;
+    const timesHtml = `
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="sixty" onclick="setTimes(this.id)">60 sec</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="ninety" onclick="setTimes(this.id)">90 sec</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="two" onclick="setTimes(this.id)">2 min</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="practice" onclick="setTimes(this.id)">Practice</button>
+        </div>
+    </div>`;
 
 // Disable the keyboard
 document.onkeydown = function (e) {
@@ -189,42 +264,17 @@ let timing = () => {
 };
 
 // Set the operand
-/*let setOperand = (operator) => {
+let setOperand = (operator) => {
     chosen = operator;
     console.log(chosen);
     problem(chosen);
-    $('.modal-body').empty();
-    $('.modal-body').html(
-        `<div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="twelve" onclick="setMaxNums(this.id)">0-12</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="twenty" onclick="setMaxNums(this.id)">0-20</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="thirty" onclick="setMaxNums(this.id)">0-30</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="fifty" onclick="setMaxNums(this.id)">0-50</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="hundred" onclick="setMaxNums(this.id)">0-100</button>
-        </div>
-    </div>`
-    );
+    debugger;
+    $('#firstModalBody').empty();
+    $('#firstModalBody').html(maxNumsHtml);
 };
 
 // Set the max number for the equations
-/*let setMaxNums = (maxNumber) => {
+let setMaxNums = (maxNumber) => {
     // determine the max number
     switch(maxNumber) {
         case 'twelve':
@@ -246,29 +296,8 @@ let timing = () => {
             maxNum = 10;
             break;
     }    
-    $('.modal-body').empty();
-    $('.modal-body').html(
-        `<div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="sixty" onclick="setTimes(this.id)">60 sec</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="ninety" onclick="setTimes(this.id)">90 sec</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="two" onclick="setTimes(this.id)">2 min</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-4 mb-2">
-            <button type="button" class="w-100 oper" id="practice" onclick="setTimes(this.id)">Practice</button>
-        </div>
-    </div>`
-    );
+    $('#firstModalBody').empty();
+    $('#firstModalBody').replaceWith(timesHtml);
 } 
 
 // Set the timer
@@ -298,21 +327,25 @@ let setTimes = (theTime) => {
         default:
             chosenTime = 10;
             break;
-    }    
-    /*$('.modal-body').empty();
-    $('.modal-body').html();//
-} */
+    }   
+    $('#firstModal').modal('hide');
+    $('#firstModalBody').replaceWith(operandHtml);
+    $('#startModal').modal('show');
+} 
 
 // Reset the start modal
 let reset = () => {
     $('#endModal').modal('hide');
+    $('#firstModal').modal('hide');
+    $('#startModal').modal('hide');
+    $('#firstModalBody').replaceWith(operandHtml);
 
     setTimeout( () => {
         $('#pausing').remove();
         $('#startingDiv').html(
             `<button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>`
         );
-        $('#startModal').modal('show');
+        $('#firstModal').modal('show');
         
         for (var i = 1; i < 99999; i++)
             window.clearInterval(i); 
@@ -346,11 +379,11 @@ let startAgain = (sameTime) => {
     timeRemaining = sameTime;
     setInterval(timing, 1000);
     timing();
-    problem('addition');
+    problem(chosen);
     $('#pausing').remove();
     $('#startModal').modal('hide');
 }
 // Trigger modal on load
-$(window).on('load', () => $('#startModal').modal('show'));
+$(window).on('load', () => $('#firstModal').modal('show'));
 
 
