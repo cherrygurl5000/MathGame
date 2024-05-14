@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Game</title>
 
+    <!-- External Stylesheet Links -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
@@ -98,92 +99,68 @@
         </main>
 
         <section>
-            <!-- Starting Modal -->
-            <div class="modal fade" id="startModal" tabindex="-1" aria-labelledby="startModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-4 mb-2" id="startingDiv">
-                                <button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <!-- End startModal-->
-            </div>
             <!-- Ending Modal -->
-            <div class="modal fade" id="endModal" tabindex="-1" aria-labelledby="endModalLabel" aria-hidden="true">
+            <div class="modal fade" id="endModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="endModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div> -->
-                    <div class="modal-body mt-3">
-                        <div class="row justify-content-center">
-                            <div class="col-12 mb-2">
-                            <h1 class="text-center">Game Over</h1> 
+                    <div class="modal-content">
+                        <div class="modal-body mt-3">
+                            <div class="row justify-content-center">
+                                <div class="col-12 mb-2">
+                                <h1 class="text-center">Game Over</h1> 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-4 pr-2 mb-2">
-                            <h3 class="text-end" id="finalScore">Score: </h3> 
+                            <div class="row justify-content-center">
+                                <div class="col-4 pr-2 mb-2">
+                                <h3 class="text-end" id="finalScore">Score: </h3> 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-4 pr-2 mb-2">
-                            <h3 class="text-end" id="finalMissed">Missed: </h3> 
+                            <div class="row justify-content-center">
+                                <div class="col-4 pr-2 mb-2">
+                                <h3 class="text-end" id="finalMissed">Missed: </h3> 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-12 mb-2">
-                            <h4 class="text-center" id="endMsg">Keep up the good work!</h4> 
+                            <div class="row justify-content-center">
+                                <div class="col-12 mb-2">
+                                <h4 class="text-center" id="endMsg">Keep up the good work!</h4> 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-4 mb-4">
-                            <button type="button" class="w-100 resNumbers" onclick="reset()">Play Again?</button> 
+                            <div class="row justify-content-center">
+                                <div class="col-4 mb-4">
+                                <button type="button" class="w-100 resNumbers" onclick="reset()">Play Again?</button> 
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 </div>
                 <!-- End endModal-->
             </div>
             <!-- Operand Modal-->
-            <div class="modal fade" id="firstModal" tabindex="-1" aria-labelledby="firstModalLabel" aria-hidden="true">
+            <div class="modal fade" id="firstModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="firstModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div> -->
-                    <div class="modal-body mt-3" id="firstModalBody">
-                        <div class="row justify-content-center">
-                            <div class="col-4 mb-2">
-                                <button type="button" class="w-100 oper pb-2" id="addition" onclick="setOperand(this.id)">+</button>
+                    <div class="modal-content">
+                        <div class="modal-body mt-3" id="firstModalBody">
+                            <div class="row justify-content-center">
+                                <div class="col-4 mb-2">
+                                    <button type="button" class="w-100 oper pb-2" id="addition" onclick="setOperand(this.id)">+</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-4 mb-2">
-                                <button type="button" class="w-100 oper pb-2" id="subtraction" onclick="setOperand(this.id)">-</button>
+                            <div class="row justify-content-center">
+                                <div class="col-4 mb-2">
+                                    <button type="button" class="w-100 oper pb-2" id="subtraction" onclick="setOperand(this.id)">-</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-4 mb-2">
-                                <button type="button" class="w-100 oper pt-2" id="multiply" onclick="setOperand(this.id)">*</button>
+                            <div class="row justify-content-center">
+                                <div class="col-4 mb-2">
+                                    <button type="button" class="w-100 oper pt-2" id="multiply" onclick="setOperand(this.id)">*</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-4 mb-2">
-                                <button type="button" class="w-100 oper pb-2" id="division" onclick="setOperand(this.id)"><i class="fa-solid fa-divide"></i></button>
+                            <div class="row justify-content-center">
+                                <div class="col-4 mb-2">
+                                    <button type="button" class="w-100 oper pb-2" id="division" onclick="setOperand(this.id)"><i class="fa-solid fa-divide"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 </div>
                 <!-- End firstModal-->
             </div>
@@ -193,12 +170,7 @@
     <!-- End of container div -->
     </div>
 
-    <!-- <button type="button" onclick="start()">Start</button>
-    <!-- Button trigger modal -->
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#startModal">
-        Launch demo modal
-    </button> -->
-    
+<!-- Script tags for all included js files-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="scripts.js"></script>

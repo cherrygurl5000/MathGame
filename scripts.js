@@ -110,10 +110,22 @@ document.onkeydown = function (e) {
 }
 
 // Start the game
-let start = () => {   
+let start = () => { 
+    // Clear all timers  
     for (var i = 1; i < 99999; i++)
         window.clearInterval(i); 
+    // Hide the endModal if it is showing
     $('#endModal').modal('hide');
+    // Start the countdown for the game 
+    let count = 3;
+    setInterval(() => {
+        $('#firstModalBody').empty();
+        $('#firstModalBody').html(
+            `<h1 class="text-center">${ (count > 0) ? count : "GO!" }</h1>`
+        );
+        count--;
+    }, 800);
+    // Pause until after the countdown, then reset everything
     setTimeout(() => {
         score.text('0');
         missed.text('0');
@@ -126,14 +138,6 @@ let start = () => {
         problem(chosen);
         $('#firstModal').modal('hide');
     }, 3900);
-        let count = 3;
-    setInterval(() => {
-        $('#startingDiv').empty();
-        $('#startingDiv').html(
-            `<h1 class="text-center">${ (count > 0) ? count : "GO!" }</h1>`
-        );
-        count--;
-    }, 800);
 };
 
 // Clear the input value
@@ -142,19 +146,16 @@ clearBtn.on("click", () => answer.val(''));
 // Delete the last character
 backspace.on("click", () => answer.val(answer.val().slice(0,-1)));
 
-// Reset everything when Restart is clicked
-//restart.on("click", reset);
 // Add the button number to the input
 numbers.forEach(number => {
     number.addEventListener('click', () => {
         answer.val(answer.val() + number.textContent);
         answer.change();
 });
-})
+});
 
 // Don't allow more than 5 digits in the answer
 answer.change(() => {
-    // console.log(answer.val().length);
     if (answer.val().length > 5) {
         answer.val(answer.val().slice(0, -1));
         answer.addClass('tooLong');
@@ -227,10 +228,9 @@ let checking = () => {
     missed.text(wrong);
     answer.val('');
     problem(chosen);
-
 };
 
-// Choose which numbers to place there
+// Choose which numbers to place in the problem
 let randoms = () => Math.floor(Math.random() * maxNum);
 
 // Complete math operations
@@ -250,6 +250,7 @@ let timing = () => {
     let mins = 0;
     let sec = 0;
 
+    // Separate minutes and seconds, add a 0 when time is under 10
     mins = Math.trunc(timeRemaining/60);
     sec = timeRemaining % 60;
     minutes = (mins<10) ? "0" + mins : mins;
@@ -259,14 +260,16 @@ let timing = () => {
     timeRemaining--;
 
     if (timeRemaining < 0) {
+        // Remove the timer and add a shaking effect when time runs out
         for (let i = 1; i < 99999; i++)
             window.clearInterval(i);
         timer.addClass('tooLong');
         setTimeout(() => timer.removeClass('tooLong'), 1000);
+        // Show the endModal and show the number correct and incorrect
         $('#endModal').modal('show');
-            $('#finalScore').html(`<strong>Score:  </strong><span class="finalBox fbScore">${ score.text() }</span>`);
+        $('#finalScore').html(`<strong>Score:  </strong><span class="finalBox fbScore">${ score.text() }</span>`);
         $('#finalMissed').html(`<strong>Missed:  </strong><span class="finalBox fbMissed">${ missed.text() }</span>`);
-        // $('#endMsg').text((Number(score.text()) >= Number(missed.text()) + 5) ? "Keep up the good work!" : "Keep Practicing!");
+        // Add a msg based on the number correct and incorrect
         if ((Number(score.text()) >= Number(missed.text()) + 5)) {
             $('#endMsg').css('font-style', 'normal');
             $('#endMsg').css('font-weight', 'bold');
@@ -290,16 +293,13 @@ let fadingModalText = (changedText) => {
 // Set the operand
 let setOperand = (operator) => {
     chosen = operator;
-    console.log(chosen);
     problem(chosen);
-    /*$('#firstModalBody').empty();
-    $('#firstModalBody').html(maxNumsHtml);*/
     fadingModalText(maxNumsHtml);
 };
 
 // Set the max number for the equations
 let setMaxNums = (maxNumber) => {
-    // determine the max number
+    // Determine the max number
     switch(maxNumber) {
         case 'twelve':
             maxNum = 12;
@@ -321,17 +321,11 @@ let setMaxNums = (maxNumber) => {
             break;
     }    
     fadingModalText(timesHtml);
-    /*$('#firstModalBody').hide(400, () => $(this).empty());
-    setTimeout(() => $('#firstModalBody').html(timesHtml), 300);
-    $('#firstModalBody').show(400, () => $(this).html(timesHtml));*/
-    /*$('#firstModalBody').empty();
-    $('#firstModalBody').html(timesHtml);*/
 } 
 
 // Set the timer
 let setTimes = (theTime) => {
-    console.log(theTime);
-    // determine the timer amount
+    // Determine the timer amount
     switch(theTime) {
         case 'thirty':
             chosenTime = 30;
@@ -360,31 +354,15 @@ let setTimes = (theTime) => {
             break;
     }   
     fadingModalText(startingHtml);
-    /*console.log(chosenTime);
-    $('#firstModalBody').hide(400, () => $(this).empty());
-    setTimeout(() => $('#firstModalBody').html(startingHtml), 300);
-    $('#firstModalBody').show(400, () => $(this).html(startingHtml));
-    //$('#firstModal').modal('hide');
-    /*$('#firstModalBody').empty();
-    $('#firstModalBody').html(startingHtml);*/
-    //$('#startModal').modal('show');
 } 
 
 // Reset the start modal
 let reset = () => {
-    /*$('#endModal').modal('hide');
+    $('#endModal').modal('hide');
     $('#firstModal').modal('hide');
-    $('#startModal').modal('hide');
-    $('#firstModalBody').empty();
-    $('#firstModalBody').html(operandHtml);*/
     fadingModalText(operandHtml);
 
-
     setTimeout( () => {
-        $('#pausing').remove();
-        /*$('#startingDiv').html(
-            `<button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>`
-        );*/
         $('#firstModal').modal('show');
         
         for (var i = 1; i < 99999; i++)
@@ -396,33 +374,34 @@ let reset = () => {
 
 // Pause the timer
 let pause = () => {
+    // Clear all timers and adjust the remaining time by adding a second
     for (var i = 1; i < 99999; i++)
         window.clearInterval(i); 
     let sameTime = timeRemaining + 1;
-    console.log("remaining: " + sameTime);
-    $('#startingDiv').html(
-        `<button type="button" class="w-100 oper pb-2" id="unpause" onclick="startAgain(${ sameTime })">Play</button>`
-    );
-    $('#startingDiv').parent().append(
-        `<div class="row justify-content-center" id="pausing">
-            <div class="col-4 mb-2" id="pauseDiv">
-                <button type="button" class="w-100 oper pb-2" id="restarted" onclick="reset()">Restart</button>
-            </div>
-        </div>`
-    );
-    $('#startModal').modal('show');
-
+    $('#firstModalBody').empty();
+    $('#firstModalBody').html(`
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2" id="startingDiv">
+            <button type="button" class="w-100 oper pb-2" id="unpause" onclick="startAgain(${ sameTime })" title="Play"><i class="fa-solid fa-play"></i></button>
+        </div>
+    </div>
+    <div class="row justify-content-center" id="pausing">
+        <div class="col-4 mb-2" id="pauseDiv">
+            <button type="button" class="w-100 oper pb-2" id="restarted" onclick="reset()" title="Restart"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+        </div>
+    </div>`);
+    $('#firstModal').modal('show');
 };
 
-// Restart the game after pause
+// Restart the game after pause and restart the starting text for the modal
 let startAgain = (sameTime) => {
     timeRemaining = sameTime;
     setInterval(timing, 1000);
     timing();
     problem(chosen);
-    $('#pausing').remove();
-    $('#startModal').modal('hide');
-}
+    fadingModalText(operandHtml);
+    $('#firstModal').modal('hide');
+};
 
 // Trigger modal on load
 $(window).on('load', () => $('#firstModal').modal('show'));
