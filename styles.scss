@@ -150,8 +150,28 @@ hr {
     100% { transform: translate(1px, -2px) rotate(-1deg); }
   }
 
-  .correct {
+  .correct, #finalScore {
     color: $score;
+  }
+
+  #finalMissed {
+    color: $missed;
+  }
+
+  .finalBox {
+    width: fit-content;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 10px;
+    background-color: $scoreBg;
+  }
+
+  .fbScore {
+    background-color: $scoreBg;
+  }
+
+  .fbMissed {
+    background-color: $missedBg;
   }
 
 .oper {
@@ -171,3 +191,11 @@ hr {
     background-color: $score;
     border-radius: 15px;
 }
+
+#endModal .modal-content {
+    background-color: lightgray;
+}
+
+// #endMsg {
+//     font-style: italic;
+// }

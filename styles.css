@@ -159,8 +159,29 @@ hr {
     transform: translate(1px, -2px) rotate(-1deg);
   }
 }
-.correct {
+.correct, #finalScore {
   color: #06D6A0;
+}
+
+#finalMissed {
+  color: #EF476F;
+}
+
+.finalBox {
+  width: -moz-fit-content;
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 10px;
+  background-color: #F8FFE5;
+}
+
+.fbScore {
+  background-color: #F8FFE5;
+}
+
+.fbMissed {
+  background-color: #FFC43D;
 }
 
 .oper {
@@ -178,4 +199,8 @@ hr {
   color: #FFC43D;
   background-color: #06D6A0;
   border-radius: 15px;
+}
+
+#endModal .modal-content {
+  background-color: lightgray;
 }/*# sourceMappingURL=styles.css.map */

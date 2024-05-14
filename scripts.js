@@ -20,6 +20,8 @@ let correct = 0;
 let wrong = 0;
 let ans = 0;
 let timeRemaining = chosenTime;
+let smallMax = '';
+let smallMaxNum = '';
 
 // Set the modal body html
 const startingHtml = `
@@ -75,7 +77,12 @@ const maxNumsHtml = `
             <button type="button" class="w-100 oper" id="hundred" onclick="setMaxNums(this.id)">0-100</button>
         </div>
     </div>`;
-    const timesHtml = `
+const timesHtml = `
+    <div class="row justify-content-center">
+        <div class="col-4 mb-2">
+            <button type="button" class="w-100 oper" id="thirty" onclick="setTimes(this.id)">30 sec</button>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-4 mb-2">
             <button type="button" class="w-100 oper" id="sixty" onclick="setTimes(this.id)">60 sec</button>
@@ -117,11 +124,11 @@ let start = () => {
         setInterval(timing, 1000);
         timing();
         problem(chosen);
-        $('#startModal').modal('hide');
+        $('#firstModal').modal('hide');
     }, 3900);
         let count = 3;
     setInterval(() => {
-        $('#starting').remove();
+        $('#startingDiv').empty();
         $('#startingDiv').html(
             `<h1 class="text-center">${ (count > 0) ? count : "GO!" }</h1>`
         );
@@ -257,10 +264,27 @@ let timing = () => {
         timer.addClass('tooLong');
         setTimeout(() => timer.removeClass('tooLong'), 1000);
         $('#endModal').modal('show');
-        $('#finalScore').text('Score: ' + score.text());
-        $('#finalMissed').text('Missed: ' + missed.text());
-        $('#endMsg').text((Number(score.text()) >= Number(missed.text()) + 5) ? "Keep up the good work!" : "Keep Practicing!");
+            $('#finalScore').html(`<strong>Score:  </strong><span class="finalBox fbScore">${ score.text() }</span>`);
+        $('#finalMissed').html(`<strong>Missed:  </strong><span class="finalBox fbMissed">${ missed.text() }</span>`);
+        // $('#endMsg').text((Number(score.text()) >= Number(missed.text()) + 5) ? "Keep up the good work!" : "Keep Practicing!");
+        if ((Number(score.text()) >= Number(missed.text()) + 5)) {
+            $('#endMsg').css('font-style', 'normal');
+            $('#endMsg').css('font-weight', 'bold');
+            $('#endMsg').text("Keep up the good work!");
+        }
+        else {
+            $('#endMsg').css('font-weight', 'normal');
+            $('#endMsg').css('font-style', 'italic');
+            $('#endMsg').text("Keep Practicing!");
+        }
     }
+};
+
+// Fade the modal in and out as the text changes
+let fadingModalText = (changedText) => {
+    $('#firstModalBody').hide(400, () => $(this).empty());
+    setTimeout(() => $('#firstModalBody').html(changedText), 300);
+    $('#firstModalBody').show(400, () => $(this).html(changedText));
 };
 
 // Set the operand
@@ -268,9 +292,9 @@ let setOperand = (operator) => {
     chosen = operator;
     console.log(chosen);
     problem(chosen);
-    debugger;
-    $('#firstModalBody').empty();
-    $('#firstModalBody').html(maxNumsHtml);
+    /*$('#firstModalBody').empty();
+    $('#firstModalBody').html(maxNumsHtml);*/
+    fadingModalText(maxNumsHtml);
 };
 
 // Set the max number for the equations
@@ -296,8 +320,12 @@ let setMaxNums = (maxNumber) => {
             maxNum = 10;
             break;
     }    
-    $('#firstModalBody').empty();
-    $('#firstModalBody').replaceWith(timesHtml);
+    fadingModalText(timesHtml);
+    /*$('#firstModalBody').hide(400, () => $(this).empty());
+    setTimeout(() => $('#firstModalBody').html(timesHtml), 300);
+    $('#firstModalBody').show(400, () => $(this).html(timesHtml));*/
+    /*$('#firstModalBody').empty();
+    $('#firstModalBody').html(timesHtml);*/
 } 
 
 // Set the timer
@@ -305,6 +333,9 @@ let setTimes = (theTime) => {
     console.log(theTime);
     // determine the timer amount
     switch(theTime) {
+        case 'thirty':
+            chosenTime = 30;
+            break;
         case 'sixty':
             chosenTime = 60;
             break;
@@ -328,23 +359,32 @@ let setTimes = (theTime) => {
             chosenTime = 10;
             break;
     }   
-    $('#firstModal').modal('hide');
-    $('#firstModalBody').replaceWith(operandHtml);
-    $('#startModal').modal('show');
+    fadingModalText(startingHtml);
+    /*console.log(chosenTime);
+    $('#firstModalBody').hide(400, () => $(this).empty());
+    setTimeout(() => $('#firstModalBody').html(startingHtml), 300);
+    $('#firstModalBody').show(400, () => $(this).html(startingHtml));
+    //$('#firstModal').modal('hide');
+    /*$('#firstModalBody').empty();
+    $('#firstModalBody').html(startingHtml);*/
+    //$('#startModal').modal('show');
 } 
 
 // Reset the start modal
 let reset = () => {
-    $('#endModal').modal('hide');
+    /*$('#endModal').modal('hide');
     $('#firstModal').modal('hide');
     $('#startModal').modal('hide');
-    $('#firstModalBody').replaceWith(operandHtml);
+    $('#firstModalBody').empty();
+    $('#firstModalBody').html(operandHtml);*/
+    fadingModalText(operandHtml);
+
 
     setTimeout( () => {
         $('#pausing').remove();
-        $('#startingDiv').html(
+        /*$('#startingDiv').html(
             `<button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>`
-        );
+        );*/
         $('#firstModal').modal('show');
         
         for (var i = 1; i < 99999; i++)
@@ -383,6 +423,7 @@ let startAgain = (sameTime) => {
     $('#pausing').remove();
     $('#startModal').modal('hide');
 }
+
 // Trigger modal on load
 $(window).on('load', () => $('#firstModal').modal('show'));
 
