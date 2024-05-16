@@ -26,80 +26,80 @@ let smallMaxNum = '';
 // Set the modal body html
 const startingHtml = `
     <div class="row justify-content-center">
-        <div class="col-4 mb-2" id="startingDiv">
+        <div class="col-8 col-md-4 mb-2" id="startingDiv">
             <button type="button" class="w-100 oper pb-2" id="starting" onclick="start()">Start</button>
         </div>
     </div>`;
 const operandHtml = `
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper pb-2" id="addition" onclick="setOperand(this.id)">+</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper pb-2" id="subtraction" onclick="setOperand(this.id)">-</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper pt-2" id="multiply" onclick="setOperand(this.id)">*</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper pb-2" id="division" onclick="setOperand(this.id)"><i class="fa-solid fa-divide"></i></button>
         </div>
     </div>`;
 const maxNumsHtml = `
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="twelve" onclick="setMaxNums(this.id)">0-12</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="twenty" onclick="setMaxNums(this.id)">0-20</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="thirty" onclick="setMaxNums(this.id)">0-30</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="fifty" onclick="setMaxNums(this.id)">0-50</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="hundred" onclick="setMaxNums(this.id)">0-100</button>
         </div>
     </div>`;
 const timesHtml = `
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="thirty" onclick="setTimes(this.id)">30 sec</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="sixty" onclick="setTimes(this.id)">60 sec</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="ninety" onclick="setTimes(this.id)">90 sec</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="two" onclick="setTimes(this.id)">2 min</button>
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-4 mb-2">
+        <div class="col-8 col-md-4 mb-2">
             <button type="button" class="w-100 oper" id="practice" onclick="setTimes(this.id)">Practice</button>
         </div>
     </div>`;
@@ -108,6 +108,8 @@ const timesHtml = `
 document.onkeydown = function (e) {
     return false;
 }
+answer.click((e) => $(this).removeAttr('readonly').select());
+answer.blur((e) => $(this).attr('readonly', 'readonly'));
 
 // Start the game
 let start = () => { 
@@ -267,7 +269,7 @@ let timing = () => {
         setTimeout(() => timer.removeClass('tooLong'), 1000);
         // Show the endModal and show the number correct and incorrect
         $('#endModal').modal('show');
-        $('#finalScore').html(`<strong>Score:  </strong><span class="finalBox fbScore">${ score.text() }</span>`);
+        $('#finalScore').html(`<strong>&nbsp;&nbsp;Score:  </strong><span class="finalBox fbScore">${ score.text() }</span>`);
         $('#finalMissed').html(`<strong>Missed:  </strong><span class="finalBox fbMissed">${ missed.text() }</span>`);
         // Add a msg based on the number correct and incorrect
         if ((Number(score.text()) >= Number(missed.text()) + 5)) {
@@ -286,7 +288,7 @@ let timing = () => {
 // Fade the modal in and out as the text changes
 let fadingModalText = (changedText) => {
     $('#firstModalBody').hide(400, () => $(this).empty());
-    setTimeout(() => $('#firstModalBody').html(changedText), 300);
+    setTimeout(() => $('#firstModalBody').html(changedText), 500);
     $('#firstModalBody').show(400, () => $(this).html(changedText));
 };
 
@@ -404,6 +406,7 @@ let startAgain = (sameTime) => {
 };
 
 // Trigger modal on load
+$(window).on('load', () => $('#firstModalBody').html(operandHtml));
 $(window).on('load', () => $('#firstModal').modal('show'));
 
 

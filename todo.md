@@ -16,14 +16,17 @@
 +-Show number of correctly answered problems
 +-Show number of missed problems
 #   Save the problems with the answer they added and the correct answer
--Modals
--   Starting modal that has the Start button and countdown
--   Ending modal that has a Restart button, scores, and motivational message
--   Operator modal to choose between addition...
--   Timing modal to choose between timers
--   Difficulty modal to choose your difficulty level
++-   Starting modal that has the Start button and countdown
++-Modals
++-   Ending modal that has a Restart button, scores, and motivational message
++-   Operator modal to choose between addition...
++-   Timing modal to choose between timers
++-   Difficulty modal to choose your difficulty level
 #   Starting - Operator - Difficulty - Timing
 
+-Add scores to the pause menu 
+-Create database/array of missed problems with correct answers
 
+-Buttons aren't showing properly on mobile screen
 
 ```
